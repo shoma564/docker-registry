@@ -1,0 +1,24 @@
+version: '3.3'
+services:
+    registry:
+        ports:
+            - '5000:5000'
+        container_name: registry
+        image: 'registry:latest'
+        volumes:
+            - './certs:/certs'
+            - './vol:/var/lib/registry'
+#        environment:
+#            - REGISTRY_HTTP_TLS_CERTIFICATE=/certs/shoma.crt
+#            - REGISTRY_HTTP_TLS_KEY=/certs/shoma.key
+
+
+    docker-registry-frontend:
+        container_name: docker-registry-frontend
+        hostname: docker-registry-frontend
+        environment:
+            - ENV_DOCKER_REGISTRY_HOST=registry
+            - ENV_DOCKER_REGISTRY_PORT=5000
+        ports:
+            - '8080:80'
+        image: 'konradkleine/docker-registry-frontend:v2'
